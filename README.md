@@ -110,9 +110,9 @@ This will list all available CUDA versions and prompt you to choose one.
 
 #### Switching to a Specific Version
 ```powershell
-.\Switch-CUDAVersion.ps1 -Version 11.3
+.\Switch-CUDAVersion.ps1 -Version v12.4
 ```
-This will switch to CUDA version 11.3 if it's installed.
+This will switch to CUDA version 12.4 if it's installed.
 
 #### Listing All Installed CUDA Versions
 ```powershell
