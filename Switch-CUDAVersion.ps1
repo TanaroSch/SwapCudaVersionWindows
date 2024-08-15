@@ -12,7 +12,7 @@ param(
 function Get-InstalledCUDAVersions {
     $cudaPath = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA"
     if (Test-Path $cudaPath) {
-        return Get-ChildItem $cudaPath -Directory | ForEach-Object { $_.Name }
+        return Get-ChildItem $cudaPath -Directory | ForEach-Object { $_.Name.TrimStart('v') }
     }
     return @()
 }
@@ -28,8 +28,9 @@ function Get-CurrentCUDAVersion {
 
 # Function to update CUDA_PATH environment variable
 function Set-CUDAPath($version) {
-    [Environment]::SetEnvironmentVariable("CUDA_PATH", "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v$version", [EnvironmentVariableTarget]::Machine)
-    [Environment]::SetEnvironmentVariable("CUDA_PATH_V$($version.Replace('.','_'))", "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v$version", [EnvironmentVariableTarget]::Machine)
+    $versionPath = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v$version"
+    [Environment]::SetEnvironmentVariable("CUDA_PATH", $versionPath, [EnvironmentVariableTarget]::Machine)
+    [Environment]::SetEnvironmentVariable("CUDA_PATH_V$($version.Replace('.','_'))", $versionPath, [EnvironmentVariableTarget]::Machine)
 }
 
 # Function to update Path environment variable
@@ -51,6 +52,7 @@ function Update-PathVariable($version) {
 
 # Function to switch CUDA version
 function Switch-CUDAVersion($version) {
+    $version = $version.TrimStart('v')  # Remove 'v' prefix if present
     $installedVersions = Get-InstalledCUDAVersions
     if ($version -in $installedVersions) {
         Set-CUDAPath $version
@@ -58,6 +60,7 @@ function Switch-CUDAVersion($version) {
         Write-Host "CUDA version switched to $version. Please restart your command prompt or applications for the changes to take effect."
     } else {
         Write-Host "Error: CUDA version $version is not installed."
+        Write-Host "Installed versions: $($installedVersions -join ', ')"
         exit 1
     }
 }
