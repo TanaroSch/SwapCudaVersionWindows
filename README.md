@@ -1,8 +1,8 @@
 # Swap CUDA Toolkit Versions on Windows
 
 This guide provides two methods for swapping CUDA versions on Windows:
-1. Manual method using System Environment Variables
-2. Automated method using a PowerShell script
+1. Manual method using System Environment Variables (forked from bycloud)
+2. Automated method using a PowerShell script (added by me)
 
 ## Method 1: Manual CUDA Version Swapping
 
